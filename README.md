@@ -1,12 +1,84 @@
 dpkg: Data Packages for R
 ================
 
-An R package to read, write, and edit [Data Package](https://specs.frictionlessdata.io/data-package/) data and metadata. Unlike other existing R packages [dpmr](https://github.com/christophergandrud/dpmr) and [datapkg](https://github.com/ropenscilabs/datapkg), dpkg can be used to build and document Data Packages entirely within R.
+An R package to read, write, and edit [Data Package](https://specs.frictionlessdata.io/data-package/) data and metadata. Unlike other existing R packages [dpmr](https://github.com/christophergandrud/dpmr) and [datapkg](https://github.com/ropenscilabs/datapkg), dpkg can be used to build and document Data Packages entirely within R. Please note that this is a work in progress and function naming and functionality may drift based on feedback from the community.
 
-*WARNING: This is a work in progress and function naming and functionality may drift based on feedback from the community.*
+This package is not on CRAN. To install in R, use [devtools](https://github.com/hadley/devtools):
+
+    devtools::install_github("ezwelty/dpkg")
+
+#### Quick introduction
+
+To build a data package, assemble the data and add metadata to the various elements:
+
+``` r
+data <- data.frame(
+  id = 1L %>% set_field(title = "Identifier"),
+  value = 1.1,
+  added = Sys.Date()
+)
+# Data Resource (list of Fields)
+dr <- data %>%
+  set_resource(
+    name = "data",
+    path = "data/data.csv"
+  )
+# Data Package (list of Resources)
+dp <- list(dr) %>%
+  set_package(
+    name = "data-package"
+  )
+```
+
+You can preview package metadata:
+
+``` r
+get_package(dp) %>% str()
+```
+
+    ## List of 2
+    ##  $ name     : chr "data-package"
+    ##  $ resources:List of 1
+    ##   ..$ :List of 3
+    ##   .. ..$ name  : chr "data"
+    ##   .. ..$ path  : chr "data/data.csv"
+    ##   .. ..$ schema:List of 1
+    ##   .. .. ..$ fields:List of 3
+    ##   .. .. .. ..$ :List of 3
+    ##   .. .. .. .. ..$ name : chr "id"
+    ##   .. .. .. .. ..$ type : chr "integer"
+    ##   .. .. .. .. ..$ title: chr "Identifier"
+    ##   .. .. .. ..$ :List of 2
+    ##   .. .. .. .. ..$ name: chr "value"
+    ##   .. .. .. .. ..$ type: chr "number"
+    ##   .. .. .. ..$ :List of 3
+    ##   .. .. .. .. ..$ name  : chr "added"
+    ##   .. .. .. .. ..$ type  : chr "date"
+    ##   .. .. .. .. ..$ format: chr "%Y-%m-%d"
+
+Write the package to file:
+
+``` r
+dir <- tempdir()
+write_package(dp, path = dir)
+```
+
+And read the package back in:
+
+``` r
+read_package(dir)
+```
+
+    ## $data
+    ##   id value      added
+    ## 1  1   1.1 2017-07-12
+    ## 
+    ## attr(,"dpkg_package")
+    ## attr(,"dpkg_package")$name
+    ## [1] "data-package"
 
 Build a package
-===============
+---------------
 
 In `dpkg`, the contents of a data *package* is stored as a list of one or more data *resources* (each a list) of one or more *fields* (each typically an atomic vector). For example:
 
@@ -33,7 +105,7 @@ As seen above with the use of `field` and `constraints`, a suite of helper funct
 -   Meta objects: `schema`, `foreignKey`, `constraints`, `license`, `source`, `contributor`
 
 Preview a package
-=================
+-----------------
 
 To preview a package, metadata can be retrieved from data objects using the `get_*` functions (`get_package`, `get_resource`, `get_field`). Missing properties are filled with their default values:
 
@@ -106,7 +178,7 @@ get_package(dp) %>% str()
     ##   .. .. ..$ added: chr "2017-07-12"
 
 Write a package
-===============
+---------------
 
 `write_package` writes package data and metadata to disk using the following rules for each resource:
 
@@ -179,7 +251,7 @@ list.files(tmpdir, recursive = TRUE)
     ## [1] "data/data.csv"    "datapackage.json"
 
 Read a package
-==============
+--------------
 
 `read_package` reads package data and metadata into the same structure described above, but unlike `write_package`, it supports both local and remote paths. The `resources` argument can be used to read only a subset of the package resources.
 
@@ -273,7 +345,7 @@ dp <- read_package_github("columbia-glacier/optical-surveys-1985", "station")
 ```
 
 TODO
-====
+----
 
 ### Fields
 
