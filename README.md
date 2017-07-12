@@ -30,7 +30,7 @@ dp <- list(dr) %>%
   )
 ```
 
-You can preview package metadata:
+You can preview the package metadata:
 
 ``` r
 get_package(dp) %>% str()
@@ -92,10 +92,15 @@ dp <- list(
 )
 ```
 
-Package, resource, and field ("data objects") metadata can be set or updated using the `set_*` functions (`set_package`, `set_resource`, `set_field`), which come in `<-` and pipe-friendly flavors:
+Package, resource, and field ("data objects") metadata can be set or updated using the `set_*` functions (`set_package`, `set_resource`, `set_field`), which come in a `<-` flavor:
 
 ``` r
 set_field(dp$dr$id) <- field(title = "Unique identifier", constraints = constraints(unique = TRUE))
+```
+
+and a pipe-friendly flavor:
+
+``` r
 dp$dr$id %<>% set_field(title = "Identifier", constraints = NULL)
 ```
 

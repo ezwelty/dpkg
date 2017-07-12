@@ -73,10 +73,15 @@ dp <- list(
 )
 ```
 
-Package, resource, and field ("data objects") metadata can be set or updated using the `set_*` functions (`set_package`, `set_resource`, `set_field`), which come in `<-` and pipe-friendly flavors:
+Package, resource, and field ("data objects") metadata can be set or updated using the `set_*` functions (`set_package`, `set_resource`, `set_field`), which come in a `<-` flavor:
 
 ```{r}
 set_field(dp$dr$id) <- field(title = "Unique identifier", constraints = constraints(unique = TRUE))
+```
+
+and a pipe-friendly flavor:
+
+```{r}
 dp$dr$id %<>% set_field(title = "Identifier", constraints = NULL)
 ```
 
@@ -167,7 +172,7 @@ unlink(tmpdir, recursive = TRUE)
 
 ## Read a package
 
-`read_package` reads package data and metadata into the same structure described above, but unlike `write_package`, it supports both local and remote paths. The `resources` argument can be used to read only a subset of the package resources.
+`read_package` reads package data and metadata into the same structure described above, but unlike `write_package`, it supports both local and remote paths. The `resources` argument can be used to read a subset of the package's resources (or all if `NULL`, the default).
 
 ```{r, message=FALSE, warning=FALSE}
 dp <- read_package(
