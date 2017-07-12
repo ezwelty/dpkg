@@ -1,0 +1,168 @@
+---
+title: "dpkg: Data Packages for R"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+devtools::load_all()
+library(magrittr)
+```
+
+An R package to read, write, and edit [Data Package](https://specs.frictionlessdata.io/data-package/) data and metadata. Unlike other existing R packages [dpmr](https://github.com/christophergandrud/dpmr) and [datapkg](https://github.com/ropenscilabs/datapkg), dpkg can be used to build and document Data Packages entirely within R.
+
+*WARNING: This is a work in progress and function naming and functionality may drift based on feedback from the community.*
+
+# Build a package
+
+In `dpkg`, the contents of a data *package* is stored as a list of one or more data *resources* (each a list) of one or more *fields* (each typically an atomic vector). For example:
+
+```{r}
+dp <- list(
+  dr = data.frame(
+    id = 1L,
+    value = 1.1,
+    added = Sys.Date()
+  )
+)
+```
+
+Package, resource, and field ("data objects") metadata can be set or updated using the `set_*` functions (`set_package`, `set_resource`, `set_field`), which come in `<-` and pipe-friendly flavors:
+
+```{r}
+set_field(dp$dr$id) <- field(title = "Unique identifier", constraints = constraints(unique = TRUE))
+dp$dr$id %<>% set_field(title = "Identifier", constraints = NULL)
+```
+
+As seen above with the use of `field` and `constraints`, a suite of helper functions are available to assist in the building of metadata:
+
+  * Data objects: `package`, `resource`, `field`
+  * Meta objects:  `schema`, `foreignKey`, `constraints`, `license`, `source`, `contributor`
+
+# Preview a package
+
+To preview a package, metadata can be retrieved from data objects using the `get_*` functions (`get_package`, `get_resource`, `get_field`). Missing properties are filled with their default values:
+
+  * Fields
+    * `name`: The name of the object in a list (resource).
+    * `type`: The type corresponding to the object class (or "string" if not supported).
+    * `format`: The default format for that type.
+    * `unit`: Units set by [units](https://github.com/edzer/units) deparsed to product power form.
+  * Resources
+    * `name`: The name of the object in a list (package).
+    * `schema$fields`: Field metadata from the elements of the object.
+  * Packages
+    * `resources`: Resource metadata from the elements of the object.
+
+```{r}
+get_field(dp$dr$id) %>% str()
+get_resource(dp$dr) %>% str()
+get_package(dp) %>% str()
+```
+
+# Write a package
+
+`write_package` writes package data and metadata to disk using the following rules for each resource:
+
+  * `format`: If missing, checks `path` file extension and `mediatype`. Only "csv" ("text/csv") and "json" ("application/json") are supported.
+  * `path`: If not set, the data is saved in the metadata (`datapackage.json`) as either an inline JSON object (`format:` "json" or missing) or a CSV string (`format:` "csv"). For writing, `path` must be a single, local, relative path.
+
+```{r, echo=FALSE}
+tmpdir <- file.path(tempdir(), "example")
+```
+
+Resource as an inline JSON object:
+
+```{r}
+set_resource(dp$dr) <- package(format = "json", path = NULL)
+get_resource(dp$dr)$data
+write_package(dp, path = tmpdir)
+list.files(tmpdir)
+```
+```{r, echo=FALSE}
+unlink(tmpdir, recursive = TRUE)
+```
+
+Resource as an inline CSV string:
+
+```{r}
+set_resource(dp$dr) <- package(format = "csv", path = NULL)
+get_resource(dp$dr)$data
+write_package(dp, path = tmpdir)
+list.files(tmpdir)
+```
+```{r, echo=FALSE}
+unlink(tmpdir, recursive = TRUE)
+```
+
+Resource as a JSON file:
+
+```{r}
+set_resource(dp$dr) <- package(format = "json", path = "data/data.json")
+get_resource(dp$dr)$data
+write_package(dp, path = tmpdir)
+list.files(tmpdir, recursive = TRUE)
+```
+```{r, echo=FALSE}
+unlink(tmpdir, recursive = TRUE)
+```
+
+Resource as a CSV file:
+
+```{r}
+set_resource(dp$dr) <- package(format = "csv", path = "data/data.csv")
+get_resource(dp$dr)$data
+write_package(dp, path = tmpdir)
+list.files(tmpdir, recursive = TRUE)
+```
+```{r, echo=FALSE}
+unlink(tmpdir, recursive = TRUE)
+```
+
+# Read a package
+
+`read_package` reads package data and metadata into the same structure described above, but unlike `write_package`, it supports both local and remote paths. The `resources` argument can be used to read only a subset of the package resources.
+
+```{r, message=FALSE, warning=FALSE}
+dp <- read_package(
+  "https://raw.githubusercontent.com/columbia-glacier/optical-surveys-1985/master",
+  resources = c("station", "velocity")
+)
+get_package(dp) %>% str()
+dp$station
+head(dp$velocity)
+```
+
+`read_package_github` accepts a shorthand GitHub repository address.
+
+```{r, message=FALSE, warning=FALSE}
+dp <- read_package_github("columbia-glacier/optical-surveys-1985", "station")
+```
+
+# TODO
+
+### Fields
+
+Only types `string`, `number`, `integer`, `boolean`, `date`, and `datetime` are implemented (see [table-schema/field-descriptors](https://specs.frictionlessdata.io/table-schema/#field-descriptors)). Add support for the remaining types:
+
+  - [ ] [object](https://specs.frictionlessdata.io/table-schema/#object)
+  - [ ] [array](https://specs.frictionlessdata.io/table-schema/#array)
+  - [ ] [time](https://specs.frictionlessdata.io/table-schema/#time) (via package [hms](https://github.com/tidyverse/hms))
+  - [ ] [year](https://specs.frictionlessdata.io/table-schema/#year) (already supported via `type = date` and `format = "%Y"`)
+  - [ ] [yearmonth](https://specs.frictionlessdata.io/table-schema/#yearmonth) (already supported via `type = date` and `format = "%Y-%m"`)
+  - [ ] [duration](https://specs.frictionlessdata.io/table-schema/#duration) (already supported via `type = numeric` and `unit`)
+  - [ ] [geopoint](https://specs.frictionlessdata.io/table-schema/#geopoint)
+  - [ ] [geojson](https://specs.frictionlessdata.io/table-schema/#geojson)
+
+Additionally:
+
+  - [ ] Validate field values against [`constraints`](https://specs.frictionlessdata.io/table-schema/#constraints) property
+  - [ ] For [string](https://specs.frictionlessdata.io/table-schema/#string), validate values against `format` property
+  - [ ] For [number](https://specs.frictionlessdata.io/table-schema/#number), support `currency` property - *What does this property contain?*
+
+### Resources & Packages
+
+  - [ ] Validate packages against the default or custom [`profile`](https://specs.frictionlessdata.io/profiles/) - *The published schemas don't match the latest specifications?!*
+  - [ ] Read/write resources with a `path` like "data/data.csv.gz" to/from compressed files
+  - [ ] Write resource schemas with a `path` to a JSON file
+  - [ ] Read/write GeoJSON and TopoJSON to/from spatial objects

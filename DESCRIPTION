@@ -1,0 +1,24 @@
+Package: dpkg
+Version: 0.1.0
+Type: Package
+Title: Data Packages for R
+Authors@R: c(person("Ethan", "Welty", role = c("aut", "cre"), email = "ethan.wety@gmail.com"))
+Description: A package to read, write, and edit data package data and metadata.
+License: AGPL-3
+Encoding: UTF-8
+LazyData: true
+Imports:
+    magrittr,
+    data.table,
+    jsonlite,
+    R.utils,
+    readr,
+    rlang,
+    tools,
+    stringr,
+    utils,
+    methods
+Suggests:
+    units,
+    testthat
+RoxygenNote: 6.0.1
