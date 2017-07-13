@@ -43,7 +43,7 @@ write_meta <- function(x, name = NULL, path = getwd(), inline_data = TRUE) {
 #' @inheritParams write_package
 #' @family package writers
 write_data <- function(x, path = getwd()) {
-  stopifnot(rlang::is_bare_list(x))
+  stopifnot(is_list_not_df(x))
   for (i in seq_along(x)) {
     meta <- get_resource(x[[i]], inline_data = FALSE)
     if (is.null(meta$path)) {

@@ -13,11 +13,11 @@ Imports:
     jsonlite,
     R.utils,
     readr,
-    rlang,
     tools,
     stringr,
     utils,
-    methods
+    methods,
+    sticky
 Suggests:
     units,
     testthat

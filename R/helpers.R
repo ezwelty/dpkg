@@ -114,3 +114,9 @@ is_empty <- function(x) {
     }
   }
 }
+
+#' Check whether an object is a list (but not a data.frame)
+#' @param x Object.
+is_list_not_df <- function(x) {
+  inherits(x, "list") && !inherits(x, "data.frame")
+}

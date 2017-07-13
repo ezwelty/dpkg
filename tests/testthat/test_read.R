@@ -12,6 +12,7 @@ dr <- data.frame(
   POSIXct = as.POSIXct("1970-01-01 00:00:01", tz = "UTC"), # hardcode for equality testing
   stringsAsFactors = FALSE
 ) %>%
+  sticky::sticky_all() %>% # make all sticky for equality testing
   set_resource(
     name = "data"
   )

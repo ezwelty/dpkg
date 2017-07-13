@@ -262,7 +262,7 @@ parse_resource_data <- function(x, meta) {
       x %<>% tabulate_json()
     }
   }
-  if (is_tabular && rlang::is_bare_list(x)) {
+  if (is_tabular && is_list_not_df(x)) {
     x %<>%
       data.table::rbindlist() %>%
       as.data.frame()

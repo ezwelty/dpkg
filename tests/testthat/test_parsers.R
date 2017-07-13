@@ -206,7 +206,7 @@ test_that("parse_datetime snaps to start of interval", {
 # ---- Dispatcher ----
 
 test_that("parse_field defaults to string", {
-  expect_equivalent(parse_field("hello"), "hello")
+  expect_true(parse_field("hello") %>% inherits("character"))
   expect_warning(parse_field("hello", meta = list(type = "unknown")))
 })
 
@@ -219,6 +219,11 @@ test_that("parse_field sets field metadata to result", {
 
 fields <- list(x = "1", y = "1")
 test_that("parse_fields passes arguments to parsing function", {
-  expect_equivalent(parse_fields(fields, meta = list(list(name = "x", type = "boolean"), list(name = "y", type = "boolean"))), list(TRUE, TRUE))
-  expect_equivalent(parse_fields(fields, meta = list(list(name = "x", type = "boolean"), list(name = "y", type = "number"))), list(TRUE, 1))
+  expect_identical(
+    parse_fields(fields, meta = list(list(name = "x", type = "boolean"), list(name = "y", type = "number"))),
+    list(
+      x = parse_field(fields$x, list(name = "x", type = "boolean")),
+      y = parse_field(fields$y, list(name = "y", type = "number"))
+    )
+  )
 })
