@@ -14,6 +14,7 @@
 #' @param path (character) Package directory.
 #' @inheritParams get_resource
 #' @family package writers
+#' @export
 write_package <- function(x, name = NULL, path = getwd(), inline_data = TRUE) {
   write_meta(x, name = name, path = path, inline_data = inline_data)
   write_data(x, path = path)

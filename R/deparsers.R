@@ -83,7 +83,6 @@ deparse_datetime <- function(x) {
 #' Deparse list of fields
 #' @param l (list of atomic vectors)
 #' @param meta (list of lists) Field metadata
-#' @export
 deparse_fields <- function(l, meta = get_fields(l)) {
   for (i in seq_along(l)) {
     l[[i]] %<>% deparse_field(meta = meta[[i]])
