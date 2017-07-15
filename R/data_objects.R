@@ -18,9 +18,8 @@
 #' get_field(x)
 set_field <- function(.data, name, type, format, title, description, rdfType, constraints, unit, ...) {
   meta <- get_called_args(...)
-  .data %>%
-    modify_attr(which = "dpkg_field", value = meta) %>%
-    sticky::sticky()
+  set_field(.data) <- meta
+  .data
 }
 #' @rdname set_field
 #' @param value (named list) Field metadata (typically a call to \code{\link{field}}).
@@ -32,7 +31,7 @@ set_field <- function(.data, name, type, format, title, description, rdfType, co
 `set_field<-` <- function(.data, value) {
   .data %>%
     modify_attr(which = "dpkg_field", value = value) %>%
-    sticky::sticky()
+    structure(class = unique(c("dpkg", class(.))))
 }
 
 #' Set field metadata by name
@@ -151,9 +150,8 @@ get_field_format_default <- function(type) {
 #' get_resource(x)
 set_resource <- function(.data, name, path, profile, title, description, format, mediatype, encoding, schema, bytes, hash, sources, licenses, ...) {
   meta <- get_called_args(...)
-  .data %>%
-    modify_attr(which = "dpkg_resource", value = meta) %>%
-    sticky::sticky()
+  set_resource(.data) <- meta
+  .data
 }
 #' @rdname set_resource
 #' @param value (named list) Resource metadata (typically a call to \code{\link{resource}}).
@@ -165,7 +163,7 @@ set_resource <- function(.data, name, path, profile, title, description, format,
 `set_resource<-` <- function(.data, value) {
   .data %>%
     modify_attr(which = "dpkg_resource", value = value) %>%
-    sticky::sticky()
+    structure(class = unique(c("dpkg", class(.))))
 }
 
 #' Set resource metadata by name
@@ -274,9 +272,8 @@ get_resources <- function(l, inline_data = FALSE) {
 #' get_package(x)
 set_package <- function(.data, name, title, description, homepage, id, profile, version, created, sources, contributors, licenses, keywords, image, resources, ...) {
   meta <- get_called_args(...)
-  .data %>%
-    modify_attr(which = "dpkg_package", value = meta) %>%
-    sticky::sticky()
+  set_package(.data) <- meta
+  .data
 }
 #' @rdname set_package
 #' @param value (named list) Package metadata (typically a call to \code{\link{package}}).
@@ -288,7 +285,7 @@ set_package <- function(.data, name, title, description, homepage, id, profile, 
 `set_package<-` <- function(.data, value) {
   .data %>%
     modify_attr(which = "dpkg_package", value = value) %>%
-    sticky::sticky()
+    structure(class = unique(c("dpkg", class(.))))
 }
 
 #' Get package metadata

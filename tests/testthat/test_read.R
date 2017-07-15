@@ -12,10 +12,12 @@ dr <- data.frame(
   POSIXct = as.POSIXct("1970-01-01 00:00:01", tz = "UTC"), # hardcode for equality testing
   stringsAsFactors = FALSE
 ) %>%
-  sticky::sticky_all() %>% # make all sticky for equality testing
   set_resource(
     name = "data"
   )
+for (i in seq_along(dr)) {
+  dr[[i]] %<>% set_field() # cast all elements to dpkg_field for equality testing
+}
 dp <- list(dr) %>%
   set_package(
     name = "test"
