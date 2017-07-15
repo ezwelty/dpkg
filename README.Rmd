@@ -95,15 +95,24 @@ As seen above with the use of `field` and `constraints`, a suite of helper funct
 To preview a package, metadata can be retrieved from data objects using the `get_*` functions (`get_package`, `get_resource`, `get_field`). Missing properties are filled with their default values:
 
   * Fields
-    * `name`: The name of the object in a list (resource).
-    * `type`: The type corresponding to the object class (or "string" if not supported).
-    * `format`: The default format for that type.
-    * `unit`: Units set by [units](https://github.com/edzer/units) deparsed to product power form.
+      * `name`: The name of the object in a list (resource).
+      * `type`: The type corresponding to the object class.
+          * `character` -> `"string"`
+          * `numeric` -> `"number"`
+          * `integer` -> `"integer"`
+          * `logical` -> `"boolean"`
+          * `Date` -> `"date"`
+          * `POSIXt` -> `"datetime"`
+          * otherwise -> `"string"`
+      * `format`: The default format for that type.
+          * `date` -> `"%Y-%m-%d"`
+          * `datetime` -> `"%Y-%m-%dT%H-%M-%SZ"`
+          * `unit`: Units set by [units](https://github.com/edzer/units) deparsed to product power form.
   * Resources
-    * `name`: The name of the object in a list (package).
-    * `schema$fields`: Field metadata from the elements of the object.
+      * `name`: The name of the object in a list (package).
+      * `schema$fields`: Field metadata from the elements of the object.
   * Packages
-    * `resources`: Resource metadata from the elements of the object.
+      * `resources`: Resource metadata from the elements of the object.
 
 ```{r}
 get_field(dp$dr$id) %>% str()

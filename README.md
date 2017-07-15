@@ -119,9 +119,18 @@ To preview a package, metadata can be retrieved from data objects using the `get
 
 -   Fields
     -   `name`: The name of the object in a list (resource).
-    -   `type`: The type corresponding to the object class (or "string" if not supported).
+    -   `type`: The type corresponding to the object class.
+        -   `character` -&gt; `"string"`
+        -   `numeric` -&gt; `"number"`
+        -   `integer` -&gt; `"integer"`
+        -   `logical` -&gt; `"boolean"`
+        -   `Date` -&gt; `"date"`
+        -   `POSIXt` -&gt; `"datetime"`
+        -   otherwise -&gt; `"string"`
     -   `format`: The default format for that type.
-    -   `unit`: Units set by [units](https://github.com/edzer/units) deparsed to product power form.
+        -   `date` -&gt; `"%Y-%m-%d"`
+        -   `datetime` -&gt; `"%Y-%m-%dT%H-%M-%SZ"`
+        -   `unit`: Units set by [units](https://github.com/edzer/units) deparsed to product power form.
 -   Resources
     -   `name`: The name of the object in a list (package).
     -   `schema$fields`: Field metadata from the elements of the object.
