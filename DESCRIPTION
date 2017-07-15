@@ -11,13 +11,11 @@ Imports:
     magrittr,
     data.table,
     jsonlite,
-    R.utils,
     readr,
-    tools,
     stringr,
-    utils,
-    methods,
-    sticky
+    R.utils,
+    tools,
+    utils
 Suggests:
     units,
     testthat
