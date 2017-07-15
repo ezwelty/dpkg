@@ -71,11 +71,14 @@ read_package(dir)
 
     ## $data
     ##   id value      added
-    ## 1  1   1.1 2017-07-12
+    ## 1  1   1.1 2017-07-15
     ## 
     ## attr(,"dpkg_package")
     ## attr(,"dpkg_package")$name
     ## [1] "data-package"
+    ## 
+    ## attr(,"class")
+    ## [1] "dpkg" "list"
 
 Build a package
 ---------------
@@ -154,7 +157,7 @@ get_resource(dp$dr) %>% str()
     ##  $ data  :'data.frame':  1 obs. of  3 variables:
     ##   ..$ id   : int 1
     ##   ..$ value: num 1.1
-    ##   ..$ added: chr "2017-07-12"
+    ##   ..$ added: chr "2017-07-15"
 
 ``` r
 get_package(dp) %>% str()
@@ -180,7 +183,7 @@ get_package(dp) %>% str()
     ##   .. ..$ data  :'data.frame':    1 obs. of  3 variables:
     ##   .. .. ..$ id   : int 1
     ##   .. .. ..$ value: num 1.1
-    ##   .. .. ..$ added: chr "2017-07-12"
+    ##   .. .. ..$ added: chr "2017-07-15"
 
 Write a package
 ---------------
@@ -198,7 +201,7 @@ get_resource(dp$dr)$data
 ```
 
     ##   id value      added
-    ## 1  1   1.1 2017-07-12
+    ## 1  1   1.1 2017-07-15
 
 ``` r
 write_package(dp, path = tmpdir)
@@ -214,7 +217,7 @@ set_resource(dp$dr) <- package(format = "csv", path = NULL)
 get_resource(dp$dr)$data
 ```
 
-    ## [1] "id,value,added\n1,1.1,2017-07-12"
+    ## [1] "id,value,added\n1,1.1,2017-07-15"
 
 ``` r
 write_package(dp, path = tmpdir)
@@ -258,7 +261,7 @@ list.files(tmpdir, recursive = TRUE)
 Read a package
 --------------
 
-`read_package` reads package data and metadata into the same structure described above, but unlike `write_package`, it supports both local and remote paths. The `resources` argument can be used to read only a subset of the package resources.
+`read_package` reads package data and metadata into the same structure described above, but unlike `write_package`, it supports both local and remote paths. The `resources` argument can be used to read a subset of the package's resources (or all if `NULL`, the default).
 
 ``` r
 dp <- read_package(
@@ -356,20 +359,20 @@ TODO
 
 Only types `string`, `number`, `integer`, `boolean`, `date`, and `datetime` are implemented (see [table-schema/field-descriptors](https://specs.frictionlessdata.io/table-schema/#field-descriptors)). Add support for the remaining types:
 
--   \[ \] \[object\](<https://specs.frictionlessdata.io/table-schema/#object>)
--   \[ \] \[array\](<https://specs.frictionlessdata.io/table-schema/#array>)
--   \[ \] \[time\](<https://specs.frictionlessdata.io/table-schema/#time>) (via package [hms](https://github.com/tidyverse/hms))
--   \[ \] \[year\](<https://specs.frictionlessdata.io/table-schema/#year>) (already supported via `type = date` and `format = "%Y"`)
--   \[ \] \[yearmonth\](<https://specs.frictionlessdata.io/table-schema/#yearmonth>) (already supported via `type = date` and `format = "%Y-%m"`)
--   \[ \] \[duration\](<https://specs.frictionlessdata.io/table-schema/#duration>) (already supported via `type = numeric` and `unit`)
--   \[ \] \[geopoint\](<https://specs.frictionlessdata.io/table-schema/#geopoint>)
--   \[ \] \[geojson\](<https://specs.frictionlessdata.io/table-schema/#geojson>)
+-   \[ \] `type =` [object](https://specs.frictionlessdata.io/table-schema/#object)
+-   \[ \] `type =` [array](https://specs.frictionlessdata.io/table-schema/#array)
+-   \[ \] `type =` [time](https://specs.frictionlessdata.io/table-schema/#time) (via package [hms](https://github.com/tidyverse/hms))
+-   \[ \] `type =` [year](https://specs.frictionlessdata.io/table-schema/#year) (already supported via `type = date` and `format = "%Y"`)
+-   \[ \] `type =` [yearmonth](https://specs.frictionlessdata.io/table-schema/#yearmonth) (already supported via `type = date` and `format = "%Y-%m"`)
+-   \[ \] `type =` [duration](https://specs.frictionlessdata.io/table-schema/#duration) (already supported via `type = numeric` and `unit`)
+-   \[ \] `type =` [geopoint](https://specs.frictionlessdata.io/table-schema/#geopoint)
+-   \[ \] `type =` [geojson](https://specs.frictionlessdata.io/table-schema/#geojson)
 
 Additionally:
 
 -   \[ \] Validate field values against [`constraints`](https://specs.frictionlessdata.io/table-schema/#constraints) property
--   \[ \] For [string](https://specs.frictionlessdata.io/table-schema/#string), validate values against `format` property
--   \[ \] For [number](https://specs.frictionlessdata.io/table-schema/#number), support `currency` property - *What does this property contain?*
+-   \[ \] For `type =` [string](https://specs.frictionlessdata.io/table-schema/#string), validate values against `format` property
+-   \[ \] For `type =` [number](https://specs.frictionlessdata.io/table-schema/#number), support `currency` property - *What does this property contain?*
 
 ### Resources & Packages
 

@@ -196,20 +196,20 @@ dp <- read_package_github("columbia-glacier/optical-surveys-1985", "station")
 
 Only types `string`, `number`, `integer`, `boolean`, `date`, and `datetime` are implemented (see [table-schema/field-descriptors](https://specs.frictionlessdata.io/table-schema/#field-descriptors)). Add support for the remaining types:
 
-  - [ ] [object](https://specs.frictionlessdata.io/table-schema/#object)
-  - [ ] [array](https://specs.frictionlessdata.io/table-schema/#array)
-  - [ ] [time](https://specs.frictionlessdata.io/table-schema/#time) (via package [hms](https://github.com/tidyverse/hms))
-  - [ ] [year](https://specs.frictionlessdata.io/table-schema/#year) (already supported via `type = date` and `format = "%Y"`)
-  - [ ] [yearmonth](https://specs.frictionlessdata.io/table-schema/#yearmonth) (already supported via `type = date` and `format = "%Y-%m"`)
-  - [ ] [duration](https://specs.frictionlessdata.io/table-schema/#duration) (already supported via `type = numeric` and `unit`)
-  - [ ] [geopoint](https://specs.frictionlessdata.io/table-schema/#geopoint)
-  - [ ] [geojson](https://specs.frictionlessdata.io/table-schema/#geojson)
+  - [ ] `type =` [object](https://specs.frictionlessdata.io/table-schema/#object)
+  - [ ] `type =` [array](https://specs.frictionlessdata.io/table-schema/#array)
+  - [ ] `type =` [time](https://specs.frictionlessdata.io/table-schema/#time) (via package [hms](https://github.com/tidyverse/hms))
+  - [ ] `type =` [year](https://specs.frictionlessdata.io/table-schema/#year) (already supported via `type = date` and `format = "%Y"`)
+  - [ ] `type =` [yearmonth](https://specs.frictionlessdata.io/table-schema/#yearmonth) (already supported via `type = date` and `format = "%Y-%m"`)
+  - [ ] `type =` [duration](https://specs.frictionlessdata.io/table-schema/#duration) (already supported via `type = numeric` and `unit`)
+  - [ ] `type =` [geopoint](https://specs.frictionlessdata.io/table-schema/#geopoint)
+  - [ ] `type =` [geojson](https://specs.frictionlessdata.io/table-schema/#geojson)
 
 Additionally:
 
   - [ ] Validate field values against [`constraints`](https://specs.frictionlessdata.io/table-schema/#constraints) property
-  - [ ] For [string](https://specs.frictionlessdata.io/table-schema/#string), validate values against `format` property
-  - [ ] For [number](https://specs.frictionlessdata.io/table-schema/#number), support `currency` property - *What does this property contain?*
+  - [ ] For `type =` [string](https://specs.frictionlessdata.io/table-schema/#string), validate values against `format` property
+  - [ ] For `type =` [number](https://specs.frictionlessdata.io/table-schema/#number), support `currency` property - *What does this property contain?*
 
 ### Resources & Packages
 
