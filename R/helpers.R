@@ -92,11 +92,11 @@ set_by_name <- function(x, fun, ...) {
 #'
 #' @param repo Repository address in the format \code{username/repo[/subdir][@ref]}, where \code{ref} can be a commit, tag, or branch name. Defaults to "master".
 github_raw_url <- function(repo) {
-  repo %>%
-    stringr::str_match("^/*([^/]+)/([^/@#]+)/*([^/@#]+)*/*(?:@(.*))*/*$") %>%
-    extract(-1) %>%
-    ifelse(is.na(.), c(NA, NA, NA, "master"), .) %>%
-    extract(c(1, 2, 4, 3)) %>%
+  m <- regexec("^/*([^/]+)/([^/@#]+)/*([^/@#]+)*/*(?:@(.*))*/*$", repo)
+  regmatches(repo, m) %>%
+    unlist() %>%
+    extract(c(2, 3, 5, 4)) %>%
+    ifelse(. == "", c(NA, NA, "master", NA), .) %>%
     Filter(Negate(is.na), .) %>%
     {do.call(paste, as.list(c("https://raw.githubusercontent.com", ., sep = "/")))}
 }
