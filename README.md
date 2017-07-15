@@ -112,6 +112,8 @@ As seen above with the use of `field` and `constraints`, a suite of helper funct
 -   Data objects: `package`, `resource`, `field`
 -   Meta objects: `schema`, `foreignKey`, `constraints`, `license`, `source`, `contributor`
 
+Data object metadata is stored as attributes. Although in base R attributes are lost in many common operations, this package provides protection from this by making metadata resilient to `[`, `[[`, `subset`, and `append`.
+
 Preview a package
 -----------------
 
