@@ -326,3 +326,47 @@ get_package <- function(x, name = NULL, inline_data = TRUE) {
   positions <- match(names(meta), names(formals(package)))
   meta[order(positions)]
 }
+
+# ---- General ----
+
+#' Unset object metadata
+#'
+#' Removes \code{dpkg} and \code{units} attributes from an object.
+#'
+#' @param x Object.
+#' @param recursive (logical) Whether to process object elements.
+#' @export
+#' @examples
+#' x = set_field(Sys.Date(), name = "test")
+#' str(unset(x))
+#' y = set_field(Sys.time(), name = "test")
+#' str(unset(y))
+#' z = set_field(TRUE, name = "test")
+#' str(unset(z))
+#' df <- set_resource(data.frame(x, y, z), name = "test")
+#' str(unset(df))
+#' l <- list(x, list(y, z))
+#' str(unset(l))
+#' \dontrun{
+#' x = set_field(units2::as_units(1, "m"), name = "test")
+#' str(unset(x))
+#' }
+unset <- function(x, recursive = TRUE) {
+  .unset_element <- function(xi) {
+    classes <- c("units", "symbolic_units", "dpkg")
+    xi %>%
+      structure(
+        class = setdiff(class(xi), classes),
+        units = NULL,
+        dpkg_field = NULL,
+        dpkg_resource = NULL,
+        dpkg_package = NULL
+      )
+  }
+  if (is.list(x) && recursive) {
+    for (i in seq_along(x)) {
+      x[[i]] %<>% unset(recursive = recursive)
+    }
+  }
+  .unset_element(x)
+}
