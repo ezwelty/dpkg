@@ -108,7 +108,7 @@ foreignKey <- function(fields, resource, resource_fields) {
     fields = fields,
     reference = list(
       resource = resource,
-      fields = fields)
+      fields = resource_fields)
   )
 }
 
