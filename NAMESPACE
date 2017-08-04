@@ -3,6 +3,7 @@
 export("set_field<-")
 export("set_package<-")
 export("set_resource<-")
+export(as_markdown)
 export(constraints)
 export(contributor)
 export(deparse_field)

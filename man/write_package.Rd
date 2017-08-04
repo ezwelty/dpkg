@@ -24,6 +24,7 @@ Writes package data and metadata to disk using the following rules for each reso
 }
 }
 \seealso{
-Other package writers: \code{\link{write_data}},
-  \code{\link{write_meta}}, \code{\link{write_resource}}
+Other package writers: \code{\link{as_markdown}},
+  \code{\link{write_data}}, \code{\link{write_meta}},
+  \code{\link{write_resource}}
 }

@@ -15,6 +15,7 @@ write_data(x, path = getwd())
 Write package data
 }
 \seealso{
-Other package writers: \code{\link{write_meta}},
-  \code{\link{write_package}}, \code{\link{write_resource}}
+Other package writers: \code{\link{as_markdown}},
+  \code{\link{write_meta}}, \code{\link{write_package}},
+  \code{\link{write_resource}}
 }

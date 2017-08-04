@@ -19,6 +19,7 @@ write_meta(x, name = NULL, path = getwd(), inline_data = TRUE)
 Write package metadata
 }
 \seealso{
-Other package writers: \code{\link{write_data}},
-  \code{\link{write_package}}, \code{\link{write_resource}}
+Other package writers: \code{\link{as_markdown}},
+  \code{\link{write_data}}, \code{\link{write_package}},
+  \code{\link{write_resource}}
 }

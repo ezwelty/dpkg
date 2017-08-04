@@ -18,5 +18,6 @@ Imports:
     utils
 Suggests:
     units,
-    testthat
+    testthat,
+    pander
 RoxygenNote: 6.0.1

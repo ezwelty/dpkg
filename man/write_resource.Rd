@@ -15,6 +15,7 @@ write_resource(x, path = NULL)
 Write resource data
 }
 \seealso{
-Other package writers: \code{\link{write_data}},
-  \code{\link{write_meta}}, \code{\link{write_package}}
+Other package writers: \code{\link{as_markdown}},
+  \code{\link{write_data}}, \code{\link{write_meta}},
+  \code{\link{write_package}}
 }

@@ -76,3 +76,49 @@ write_resource <- function(x, path = NULL) {
     json = write_json(x, file = file)
   )
 }
+
+# ---- Documentation ----
+
+#' Generate markdown representation of a list
+#'
+#' @param x (list) Object.
+#' @param indent (integer) Base indentation level of markdown list.
+#' @family package writers
+#' @export
+as_markdown <- function(x, indent = 0) {
+  if (!"pander" %in% rownames(utils::installed.packages())) {
+    stop("Requires package pander")
+  }
+  # see: https://stackoverflow.com/questions/26863406/issue-with-panderknitr-error-when-using-pander-list
+  pander::panderOptions('knitr.auto.asis', FALSE)
+  .markdown_list <- function(x, level = 0) {
+    nx <- names(x)
+    if (length(nx) == 0) {
+      nx <- rep("", length(x))
+    }
+    x_names <- ifelse(
+      nx == "",
+      sprintf("  * [%d]", seq_along(x)),
+      sprintf("  * **%s**:", nx)
+    )
+    txt <- seq_along(x) %>%
+      lapply(function(i) {
+        if (is_list_not_df(x[[i]])) {
+          .markdown_list(x[[i]], level = level + 1) %>%
+            paste(x_names[i], ., sep = "\n")
+        } else {
+          paste0(utils::capture.output(pander::pander(x[[i]])), collapse = "\n") %>%
+            paste(x_names[i], ., sep = " ")
+        }
+      }) %>%
+      unlist() %>%
+      paste0(collapse = "\n")
+    if (level > 0) {
+      pander::pandoc.indent(txt, 1)
+    } else {
+      txt
+    }
+  }
+  .markdown_list(x) %>%
+    pander::pandoc.indent(indent)
+}
