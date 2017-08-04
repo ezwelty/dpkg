@@ -120,5 +120,6 @@ as_markdown <- function(x, indent = 0) {
     }
   }
   .markdown_list(x) %>%
-    pander::pandoc.indent(indent)
+    pander::pandoc.indent(indent) %>%
+    paste0("\n", ., "\n\n")
 }
