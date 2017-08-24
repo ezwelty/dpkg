@@ -42,14 +42,6 @@ test_that("parse_number supports trailing exponents ([e|E][+|-]{0,1}[0-9]*)", {
   expect_identical(unique(parse_number(c("1e1", "1.0e1", "1e01", "1E1", "1E+1"))), 10)
 })
 
-test_that("parse_number supports percentages (%{0,1}$)", {
-  expect_identical(parse_number("1%"), 0.01)
-  expect_identical(parse_number("53E1%"), 5.3)
-  expect_warning(parse_number("1%%"))
-  expect_warning(parse_number("%1"))
-  expect_warning(parse_number("53%E1"))
-})
-
 test_that("parse_number supports a custom decimal character", {
   expect_identical(parse_number("1.0"), 1)
   expect_identical(parse_number("1,0", decimalChar = ","), 1)
@@ -61,6 +53,13 @@ test_that("parse_number supports a grouping character", {
   expect_identical(parse_number("1,000", groupChar = ","), 1000)
   expect_warning(parse_number("1,000"))
   expect_error(parse_number("", groupChar = ".,"))
+})
+
+test_that("parse_number supports trailing non-numeric characters", {
+  expect_identical(parse_number("10E-1%", bareNumber = FALSE), 1)
+  expect_identical(parse_number("$-1.00 USD", bareNumber = FALSE), -1)
+  expect_identical(parse_number("$NaN", bareNumber = FALSE), NaN)
+  expect_identical(parse_number("$-Inf", bareNumber = FALSE), -Inf)
 })
 
 if ("units" %in% rownames(utils::installed.packages())) {
@@ -86,6 +85,11 @@ test_that("parse_integer supports only whole numbers", {
   expect_identical(unique(parse_integer(c("1", "1.0", "+1", "1e0", "0.1e1"))), 1L)
   expect_warning(parse_integer(1.1))
   expect_warning(parse_integer("1.1"))
+})
+
+test_that("parse_integer supports trailing non-numeric characters", {
+  expect_identical(parse_integer("1%", bareNumber = FALSE), 1L)
+  expect_identical(parse_integer("$-1 USD", bareNumber = FALSE), -1L)
 })
 
 if ("units" %in% rownames(utils::installed.packages())) {

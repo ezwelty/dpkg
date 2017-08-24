@@ -14,9 +14,10 @@ parse_field(x, meta = NULL)
 
 parse_string(x)
 
-parse_number(x, decimalChar = ".", groupChar = NULL, unit = NULL)
+parse_number(x, decimalChar = ".", groupChar = NULL, bareNumber = TRUE,
+  unit = NULL)
 
-parse_integer(x, unit = NULL)
+parse_integer(x, bareNumber = TRUE, unit = NULL)
 
 parse_boolean(x, trueValues = c("true", "True", "TRUE", "1"),
   falseValues = c("false", "False", "FALSE", "0"))
@@ -33,6 +34,8 @@ parse_datetime(x, format = "\%Y-\%m-\%dT\%H:\%M:\%SZ")
 \item{decimalChar}{(character) Symbol used to indicate the decimal place.}
 
 \item{groupChar}{(character) Symbol used to chunk larger numbers.}
+
+\item{bareNumber}{(boolean) Whether \code{x}, if character, follows the formatting constraints of a number. If \code{FALSE}, trailing non-numeric characters are first removed.}
 
 \item{unit}{(character) Unit of measure in product power form (see \code{\link[units]{parse_unit}}).}
 

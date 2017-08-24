@@ -5,7 +5,7 @@
 \title{Create contributor}
 \usage{
 contributor(title, path = NULL, email = NULL, role = NULL,
-  organization = NULL)
+  organisation = NULL)
 }
 \arguments{
 \item{title}{(character) Name or title of the contributor.}
@@ -16,7 +16,7 @@ contributor(title, path = NULL, email = NULL, role = NULL,
 
 \item{role}{(character) String describing contributor's role (e.g. author, publisher, maintainer, wrangler, contributor).}
 
-\item{organization}{(character) Organization contributor is affiliated with.}
+\item{organisation}{(character) Organisation contributor is affiliated with.}
 }
 \description{
 A person or organization who contributed to the data package.

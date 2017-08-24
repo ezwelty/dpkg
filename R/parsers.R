@@ -42,11 +42,10 @@ parse_string <- function(x) {
 #' @rdname parse_field
 #' @param decimalChar (character) Symbol used to indicate the decimal place.
 #' @param groupChar (character) Symbol used to chunk larger numbers.
+#' @param bareNumber (boolean) Whether \code{x}, if character, follows the formatting constraints of a number. If \code{FALSE}, trailing non-numeric characters are first removed.
 #' @param unit (character) Unit of measure in product power form (see \code{\link[units]{parse_unit}}).
-parse_number <- function(x, decimalChar = ".", groupChar = NULL, unit = NULL) {
+parse_number <- function(x, decimalChar = ".", groupChar = NULL, bareNumber = TRUE, unit = NULL) {
   if (!is.numeric(x)) {
-    is_percentage <- grepl("%$", x)
-    x[is_percentage] %<>% gsub("%{1}$", "", .)
     if (decimalChar != ".") {
       stopifnot(
         is.character(decimalChar),
@@ -63,9 +62,10 @@ parse_number <- function(x, decimalChar = ".", groupChar = NULL, unit = NULL) {
       )
       x %<>% gsub(groupChar, "", .)
     }
-    x %<>%
-      as.numeric()
-    x[is_percentage] %<>% divide_by(100)
+    if (!bareNumber) {
+      x %<>% gsub("^[^0-9\\-\\+\\.(NAN)(INF)]+|[^0-9\\-\\+\\.(NAN)(INF)]+$", "", ., perl = TRUE, ignore.case = TRUE)
+    }
+    x %<>% as.numeric()
   }
   if (!is.null(unit) && "units" %in% rownames(utils::installed.packages())) {
     units::as.units(x, units::parse_unit(unit))
@@ -75,9 +75,12 @@ parse_number <- function(x, decimalChar = ".", groupChar = NULL, unit = NULL) {
 }
 
 #' @rdname parse_field
-parse_integer <- function(x, unit = NULL) {
+parse_integer <- function(x, bareNumber = TRUE, unit = NULL) {
   if (!is.integer(x)) {
     if (!is.numeric(x)) {
+      if (!bareNumber) {
+        x %<>% gsub("^[^0-9\\-\\+]+|[^0-9\\-\\+]+$", "", ., perl = TRUE, ignore.case = TRUE)
+      }
       x %<>% as.numeric()
     }
     x_int <- as.integer(x)
@@ -176,6 +179,16 @@ parse_datetime <- function(x, format = "%Y-%m-%dT%H:%M:%SZ") {
     readr::parse_datetime(x, format = format, na = character(), locale = readr::locale(tz = "UTC")) %>%
       `attr<-`("problems", NULL)
   }
+}
+
+#' Remove trailing non-numeric characters
+#'
+#' Removes trailing characters until the first instance of any of the following:
+#' "0-9", "+", "-", ".", "NAN", or "INF"
+#'
+#' @param x (character)
+.remove_trailing_nonnumeric <- function(x) {
+  gsub("^[^0-9\\-\\+\\.(NAN)(INF)]+|[^0-9\\-\\+\\.(NAN)(INF)]+$", "", x, perl = TRUE, ignore.case = TRUE)
 }
 
 # ---- Field list ----

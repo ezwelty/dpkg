@@ -394,7 +394,6 @@ Additionally:
 
 -   \[ \] Validate field values against [`constraints`](https://specs.frictionlessdata.io/table-schema/#constraints) property
 -   \[ \] For `type =` [string](https://specs.frictionlessdata.io/table-schema/#string), validate values against `format` property
--   \[ \] For `type =` [number](https://specs.frictionlessdata.io/table-schema/#number), support `currency` property - *What does this property contain?*
 
 ### Resources & Packages
 
