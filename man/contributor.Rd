@@ -4,16 +4,19 @@
 \alias{contributor}
 \title{Create contributor}
 \usage{
-contributor(title, url = NULL, email = NULL, role = NULL)
+contributor(title, path = NULL, email = NULL, role = NULL,
+  organization = NULL)
 }
 \arguments{
 \item{title}{(character) Name or title of the contributor.}
 
-\item{url}{(character) URL pointing to a relevant location online.}
+\item{path}{(character) URL pointing to a relevant location online.}
 
 \item{email}{(character) Email address.}
 
 \item{role}{(character) String describing contributor's role (e.g. author, publisher, maintainer, wrangler, contributor).}
+
+\item{organization}{(character) Organization contributor is affiliated with.}
 }
 \description{
 A person or organization who contributed to the data package.
@@ -22,7 +25,7 @@ A person or organization who contributed to the data package.
 contributor(
   title = "Joe Bloggs",
   email = "joe@bloggs.com",
-  url = "http://www.bloggs.com",
+  path = "http://www.bloggs.com",
   role = "author"
 )
 }

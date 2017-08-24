@@ -235,6 +235,9 @@ get_resource <- function(x, name = NULL, inline_data = TRUE) {
       meta$data <- write_resource(x)
     }
   }
+  if (is.null(meta$profile)) {
+    meta$profile <- "data-resource"
+  }
   positions <- match(names(meta), names(formals(resource)))
   meta[order(positions)]
 }
@@ -322,6 +325,9 @@ get_package <- function(x, name = NULL, inline_data = TRUE) {
     if (any(missing_name)) {
       stop(paste0("Package has resources with no name at positions: ", toString(which(missing_name))))
     }
+  }
+  if (is.null(meta$profile)) {
+    meta$profile <- "data-package"
   }
   positions <- match(names(meta), names(formals(package)))
   meta[order(positions)]

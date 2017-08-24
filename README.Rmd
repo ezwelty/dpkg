@@ -224,7 +224,9 @@ Additionally:
 
 ### Resources & Packages
 
-  - [ ] Validate packages against the default or custom [`profile`](https://specs.frictionlessdata.io/profiles/) - *The published schemas don't match the latest specifications?!*
+  - [ ] Validate packages, resources, and schemas against standard (https://specs.frictionlessdata.io/schemas/registry.json) or custom profiles.
   - [ ] Read/write resources with a `path` like "data/data.csv.gz" to/from compressed files
   - [ ] Write resource schemas with a `path` to a JSON file
   - [ ] Read/write GeoJSON and TopoJSON to/from spatial objects
+  - [ ] Validate license name against http://licenses.opendefinition.org/licenses/groups/all.json
+  - [ ] Support reading packages based on their [Data Package Identifier](http://specs.frictionlessdata.io/data-package-identifier/)

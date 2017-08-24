@@ -166,7 +166,7 @@ resource <- function(name = NULL, path = NULL, profile = NULL, title = NULL, des
 #' @param description (character) Human-readable description.
 #' @param homepage (character) URL of the package homepage.
 #' @param id (character) Globally unique identifier.
-#' @param profile (character) Custom package profile (see \url{https://specs.frictionlessdata.io/profiles/}).
+#' @param profile (character) Package profile (see \url{https://specs.frictionlessdata.io/profiles/}).
 #' @param version (character) Version specification (see \url{http://semver.org/}).
 #' @param created (character) ISO 8601 date and time of package creation (see \url{https://tools.ietf.org/html/rfc3339#section-5.6}).
 #' @param sources (list) See \code{\link{source}}.
@@ -234,18 +234,19 @@ source <- function(title = NULL, path = NULL, email = NULL) {
 #'
 #' @export
 #' @param title (character) Name or title of the contributor.
-#' @param url (character) URL pointing to a relevant location online.
+#' @param path (character) URL pointing to a relevant location online.
 #' @param email (character) Email address.
 #' @param role (character) String describing contributor's role (e.g. author, publisher, maintainer, wrangler, contributor).
+#' @param organisation (character) Organisation contributor is affiliated with.
 #' @references \url{https://specs.frictionlessdata.io/data-package/#contributors}
 #' @family meta objects
 #' @examples
 #' contributor(
 #'   title = "Joe Bloggs",
 #'   email = "joe@bloggs.com",
-#'   url = "http://www.bloggs.com",
+#'   path = "http://www.bloggs.com",
 #'   role = "author"
 #' )
-contributor <- function(title, url = NULL, email = NULL, role = NULL) {
+contributor <- function(title, path = NULL, email = NULL, role = NULL, organisation = NULL) {
   get_called_args()
 }

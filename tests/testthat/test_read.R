@@ -13,14 +13,16 @@ dr <- data.frame(
   stringsAsFactors = FALSE
 ) %>%
   set_resource(
-    name = "data"
+    name = "data",
+    profile = "data-resource"
   )
 for (i in seq_along(dr)) {
   dr[[i]] %<>% set_field() # cast all elements to dpkg_field for equality testing
 }
 dp <- list(dr) %>%
   set_package(
-    name = "test"
+    name = "test",
+    profile = "data-package"
   )
 dir <- tempdir()
 

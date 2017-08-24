@@ -36,13 +36,15 @@ You can preview the package metadata:
 get_package(dp) %>% str()
 ```
 
-    ## List of 2
+    ## List of 3
     ##  $ name     : chr "data-package"
+    ##  $ profile  : chr "data-package"
     ##  $ resources:List of 1
-    ##   ..$ :List of 3
-    ##   .. ..$ name  : chr "data"
-    ##   .. ..$ path  : chr "data/data.csv"
-    ##   .. ..$ schema:List of 1
+    ##   ..$ :List of 4
+    ##   .. ..$ name   : chr "data"
+    ##   .. ..$ path   : chr "data/data.csv"
+    ##   .. ..$ profile: chr "data-resource"
+    ##   .. ..$ schema :List of 1
     ##   .. .. ..$ fields:List of 3
     ##   .. .. .. ..$ :List of 3
     ##   .. .. .. .. ..$ name : chr "id"
@@ -71,10 +73,13 @@ read_package(dir)
 
     ## $data
     ##   id value      added
-    ## 1  1   1.1 2017-07-15
+    ## 1  1   1.1 2017-08-24
     ## 
     ## attr(,"dpkg_package")
     ## attr(,"dpkg_package")$name
+    ## [1] "data-package"
+    ## 
+    ## attr(,"dpkg_package")$profile
     ## [1] "data-package"
     ## 
     ## attr(,"class")
@@ -151,8 +156,9 @@ get_field(dp$dr$id) %>% str()
 get_resource(dp$dr) %>% str()
 ```
 
-    ## List of 2
-    ##  $ schema:List of 1
+    ## List of 3
+    ##  $ profile: chr "data-resource"
+    ##  $ schema :List of 1
     ##   ..$ fields:List of 3
     ##   .. ..$ :List of 3
     ##   .. .. ..$ name : chr "id"
@@ -165,20 +171,22 @@ get_resource(dp$dr) %>% str()
     ##   .. .. ..$ name  : chr "added"
     ##   .. .. ..$ type  : chr "date"
     ##   .. .. ..$ format: chr "%Y-%m-%d"
-    ##  $ data  :'data.frame':  1 obs. of  3 variables:
+    ##  $ data   :'data.frame': 1 obs. of  3 variables:
     ##   ..$ id   : int 1
     ##   ..$ value: num 1.1
-    ##   ..$ added: chr "2017-07-15"
+    ##   ..$ added: chr "2017-08-24"
 
 ``` r
 get_package(dp) %>% str()
 ```
 
-    ## List of 1
+    ## List of 2
+    ##  $ profile  : chr "data-package"
     ##  $ resources:List of 1
-    ##   ..$ :List of 3
-    ##   .. ..$ name  : chr "dr"
-    ##   .. ..$ schema:List of 1
+    ##   ..$ :List of 4
+    ##   .. ..$ name   : chr "dr"
+    ##   .. ..$ profile: chr "data-resource"
+    ##   .. ..$ schema :List of 1
     ##   .. .. ..$ fields:List of 3
     ##   .. .. .. ..$ :List of 3
     ##   .. .. .. .. ..$ name : chr "id"
@@ -191,10 +199,10 @@ get_package(dp) %>% str()
     ##   .. .. .. .. ..$ name  : chr "added"
     ##   .. .. .. .. ..$ type  : chr "date"
     ##   .. .. .. .. ..$ format: chr "%Y-%m-%d"
-    ##   .. ..$ data  :'data.frame':    1 obs. of  3 variables:
+    ##   .. ..$ data   :'data.frame':   1 obs. of  3 variables:
     ##   .. .. ..$ id   : int 1
     ##   .. .. ..$ value: num 1.1
-    ##   .. .. ..$ added: chr "2017-07-15"
+    ##   .. .. ..$ added: chr "2017-08-24"
 
 Write a package
 ---------------
@@ -212,7 +220,7 @@ get_resource(dp$dr)$data
 ```
 
     ##   id value      added
-    ## 1  1   1.1 2017-07-15
+    ## 1  1   1.1 2017-08-24
 
 ``` r
 write_package(dp, path = tmpdir)
@@ -228,7 +236,7 @@ set_resource(dp$dr) <- package(format = "csv", path = NULL)
 get_resource(dp$dr)$data
 ```
 
-    ## [1] "id,value,added\n1,1.1,2017-07-15"
+    ## [1] "id,value,added\n1,1.1,2017-08-24"
 
 ``` r
 write_package(dp, path = tmpdir)
@@ -282,10 +290,11 @@ dp <- read_package(
 get_package(dp) %>% str()
 ```
 
-    ## List of 7
+    ## List of 8
     ##  $ name        : chr "optical-surveys-1985"
     ##  $ title       : chr "Optical Surveys (1985)"
     ##  $ description : chr "Velocity of three reflectors 1.3, 2.8, and 4.6 km from the terminus and meteorological observations from a station on nearby He"| __truncated__
+    ##  $ profile     : chr "data-package"
     ##  $ version     : chr "0.1.0"
     ##  $ sources     :List of 1
     ##   ..$ :List of 2
@@ -297,11 +306,12 @@ get_package(dp) %>% str()
     ##   .. ..$ email: chr "ethan.welty@gmail.com"
     ##   .. ..$ role : chr "author"
     ##  $ resources   :List of 2
-    ##   ..$ :List of 4
-    ##   .. ..$ name  : chr "station"
-    ##   .. ..$ path  : chr "data/station.csv"
-    ##   .. ..$ title : chr "Station Metadata"
-    ##   .. ..$ schema:List of 1
+    ##   ..$ :List of 5
+    ##   .. ..$ name   : chr "station"
+    ##   .. ..$ path   : chr "data/station.csv"
+    ##   .. ..$ profile: chr "data-resource"
+    ##   .. ..$ title  : chr "Station Metadata"
+    ##   .. ..$ schema :List of 1
     ##   .. .. ..$ fields:List of 2
     ##   .. .. .. ..$ :List of 4
     ##   .. .. .. .. ..$ name       : chr "lat"
@@ -313,11 +323,12 @@ get_package(dp) %>% str()
     ##   .. .. .. .. ..$ type       : chr "number"
     ##   .. .. .. .. ..$ description: chr "Longitude (WGS84, EPSG:4326)."
     ##   .. .. .. .. ..$ unit       : chr "°"
-    ##   ..$ :List of 4
-    ##   .. ..$ name  : chr "velocity"
-    ##   .. ..$ path  : chr "data/velocity.csv"
-    ##   .. ..$ title : chr "Marker Velocity"
-    ##   .. ..$ schema:List of 1
+    ##   ..$ :List of 5
+    ##   .. ..$ name   : chr "velocity"
+    ##   .. ..$ path   : chr "data/velocity.csv"
+    ##   .. ..$ profile: chr "data-resource"
+    ##   .. ..$ title  : chr "Marker Velocity"
+    ##   .. ..$ schema :List of 1
     ##   .. .. ..$ fields:List of 4
     ##   .. .. .. ..$ :List of 3
     ##   .. .. .. .. ..$ name       : chr "marker"
@@ -387,7 +398,9 @@ Additionally:
 
 ### Resources & Packages
 
--   \[ \] Validate packages against the default or custom [`profile`](https://specs.frictionlessdata.io/profiles/) - *The published schemas don't match the latest specifications?!*
+-   \[ \] Validate packages, resources, and schemas against standard (<https://specs.frictionlessdata.io/schemas/registry.json>) or custom profiles.
 -   \[ \] Read/write resources with a `path` like "data/data.csv.gz" to/from compressed files
 -   \[ \] Write resource schemas with a `path` to a JSON file
 -   \[ \] Read/write GeoJSON and TopoJSON to/from spatial objects
+-   \[ \] Validate license name against <http://licenses.opendefinition.org/licenses/groups/all.json>
+-   \[ \] Support reading packages based on their [Data Package Identifier](http://specs.frictionlessdata.io/data-package-identifier/)

@@ -20,7 +20,7 @@ package(name = NULL, title = NULL, description = NULL, homepage = NULL,
 
 \item{id}{(character) Globally unique identifier.}
 
-\item{profile}{(character) Custom package profile (see \url{https://specs.frictionlessdata.io/profiles/}).}
+\item{profile}{(character) Package profile (see \url{https://specs.frictionlessdata.io/profiles/}).}
 
 \item{version}{(character) Version specification (see \url{http://semver.org/}).}
 
